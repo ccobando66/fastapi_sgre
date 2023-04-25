@@ -10,7 +10,7 @@ class CrudBase:
     def save_model_on_db(self,model) -> None:
         self.__session.add(model)
         self.__session.commit()
-
+        self.__session.refresh(model)
     
     def get_model(self, model:object, column:Column, value:Any) -> object:
         return self.__session.query(model

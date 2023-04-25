@@ -4,11 +4,22 @@ from .config.database import engine
 from .routers import (
     user,personal
 )
-
+from fastapi.middleware.cors import CORSMiddleware
+ 
 Base.metadata.create_all(engine)
 
 app = FastAPI()
 
+#cors
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_headers=['*'],
+    allow_methods=['*']
+)
+
+#routers
 app.include_router(user.router)
 app.include_router(personal.router)
 
