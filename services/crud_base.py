@@ -20,7 +20,7 @@ class CrudBase:
     def get_many_models(self, model:object, skip:int, limit: int ) -> List[object]:
         return self.__session.query(model
                                     ).offset(skip
-                                    ).limit(limit
+                                    ).limit(limit     
                                     ).all()
                                     
     def create_model(self,model: object, schema:dict) -> None:
