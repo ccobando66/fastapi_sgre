@@ -35,6 +35,11 @@ class User(Base):
         DateTime
     )
     
+    is_actived = Column(
+        Boolean,
+        default=False
+    )
+    
     is_super_user = Column(
         Boolean,
         default=False

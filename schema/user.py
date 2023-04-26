@@ -12,6 +12,7 @@ class UserCreate(UserBase):
     
 class User(UserBase):
     ingreso: datetime | None = None
+    is_actived: bool 
     class Config:
         orm_mode=True
     
