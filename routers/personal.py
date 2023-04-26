@@ -44,20 +44,20 @@ async def set_personal(personal_schema:PersonalCreate,seccion: common_seccion):
         )
     return get_data 
 
-"""
+
 @router.patch(
     path='/',
-    response_model=UserShema
+    response_model=PersonalShema
 )
-async def modify_user(user_schema:UserCreate,seccion: common_seccion):
-    get_data = UserService(seccion).update_user(user_schema)
+async def modify_user(user_schema:PersonalCreate,seccion: common_seccion):
+    get_data = PersonalService(seccion).update_personal(user_schema)
     if type(get_data) == str:
        raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=get_data
         )
     return get_data
-"""
+
 
 @router.delete(
     path='/{cedula}/delete',

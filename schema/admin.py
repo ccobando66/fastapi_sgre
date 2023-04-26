@@ -1,15 +1,9 @@
 from .base_module import *
 from .user import User
-from enum import Enum
 
-class permisos(Enum):
-    read = 'r'
-    write = 'rw'
-    exec = 'rwx'
-    all = 'drwx'
 
 class AdminBase(BaseModel):
-    permisos: permisos
+    pass
     
 class AdminCreate(AdminBase):
     user_cedula: str

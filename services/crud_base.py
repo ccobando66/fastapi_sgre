@@ -6,7 +6,8 @@ from .base_module import (
 class CrudBase:
     def __init__(self, session:Session) -> None:
         self.__session = session
-    
+        
+    #crud base models
     def save_model_on_db(self,model) -> None:
         self.__session.add(model)
         self.__session.commit()
@@ -42,6 +43,29 @@ class CrudBase:
         self.__session.delete(model)
         self.__session.commit()
     
+    #function crud
+    def verify_data(self, data:Any,**kwargs) -> str | object:
+        count = 0
+        
+        for value in kwargs:
+            
+            if kwargs[value](data) is None and count == 0:
+               return f"{data} no esta registrado en el sistema"
+            
+            if count == 0:
+                get_data = kwargs[value](data)
+            
+            
+            if kwargs[value](data) is not None and count !=0:
+                return f"{data} ya esta registrado en el sistema o esta registrado con otro rol" 
+            
+            if len(kwargs) == count+1: 
+                return get_data
+            
+            count+=1
+        
+            
+    #setter        
     
     @property
     def get_session(self):

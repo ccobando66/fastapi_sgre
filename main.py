@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from .models.admin import Base
 from .config.database import engine
 from .routers import (
-    user,personal
+    user,personal,admin
 )
 from fastapi.middleware.cors import CORSMiddleware
  
@@ -22,6 +22,7 @@ app.add_middleware(
 #routers
 app.include_router(user.router)
 app.include_router(personal.router)
+app.include_router(admin.router)
 
 @app.get('/')
 async def root():

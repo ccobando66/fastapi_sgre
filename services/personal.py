@@ -28,14 +28,14 @@ class Personal(CrudBase):
     
     def create_personal(self,personal_schema:PersonalCreate) -> PersonalModel | str:
         
-        get_user = self.get_personal_by_user(personal_schema.user_cedula.strip())
-        if get_user is None:
-            return f"{personal_schema.user_cedula} n esta registrado en el sistema" 
+        get_user = super().verify_data(data=personal_schema.user_cedula,
+                                       fun_1=self.get_personal_by_user,
+                                       fun_2=self.get_personal
+                                     )
         
-         
-        if self.get_personal(personal_schema.user_cedula) is not None:
-            return f"{personal_schema.user_cedula} ya esta registrado en el sistema" 
-            
+        if type(get_user) == str:
+            return get_user
+          
         personal_schema.user_cedula = get_user.cedula
         personal_schema.permisos = personal_schema.permisos.value    
         super().create_model(PersonalModel,
@@ -46,30 +46,28 @@ class Personal(CrudBase):
         super().get_session.commit()
             
         return self.get_personal(personal_schema.user_cedula)
+          
+
+    def update_personal(self,personal_schema:PersonalCreate) -> PersonalModel | str:
+        
+        result = super().verify_data(data=personal_schema.user_cedula,
+                                     fun_1=self.get_personal
+                                     )
+        
+        if type(result) == str:
+            return result
+        
+        personal_schema.permisos = personal_schema.permisos.value
+        super().update_model(PersonalModel,
+                             PersonalModel.user_cedula,
+                             personal_schema.user_cedula.strip(),
+                             personal_schema.dict(exclude_unset=True,
+                                                  exclude={'user_cedula'}
+                                                 )
+                            )
+        return self.get_personal(personal_schema.user_cedula)
         
         
-        
-    
-    """"
-    def update_personal(self,user_schema:UserCreate) -> PersonalModel | str:
-        try:
-            
-            if user_schema.passwd is not None:
-               user_schema.passwd = bcrypt.hash(user_schema.passwd.strip())
-            
-            super().update_model(PersonalModel,
-                                 PersonalModel.cedula,
-                                 user_schema.cedula.strip(),
-                                 user_schema.dict(exclude_unset=True,
-                                                  exclude={'cedula'}
-                                                  )
-                                )
-            return self.get_user(user_schema.cedula)
-        
-        except Exception:
-            super().get_session.close()
-            return "A ocurrido un error, por favor verifique los datos"
-    """
     def delete_personal(self,cedula:str) -> PersonalModel | str:
         try:
             user_db = self.get_personal(cedula.strip())

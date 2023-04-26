@@ -16,5 +16,6 @@ class Admin(Base):
     )
     
     user = relationship(
-        'User'
+        'User',
+        cascade="all, delete"
     )

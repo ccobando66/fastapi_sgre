@@ -28,7 +28,6 @@ class User(CrudBase):
             super().create_model(UserModel,
                                 user_schema.dict()
                                 )
-            print(self.get_user(user_schema.cedula))
             return self.get_user(user_schema.cedula)
         
         except Exception as ex:
