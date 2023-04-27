@@ -1,5 +1,5 @@
-from .base_module import *
-from ..config.database import Base
+from models.base_module import *
+from config.database import Base
 
 
 class User(Base):

@@ -10,6 +10,10 @@ class UserCreate(UserBase):
     email: EmailStr
     passwd:str
     
+class UserToken(UserBase):
+    token:str
+    
+    
 class User(UserBase):
     ingreso: datetime | None = None
     is_actived: bool 

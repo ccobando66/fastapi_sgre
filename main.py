@@ -6,7 +6,7 @@ from .routers import (
 )
 from fastapi.middleware.cors import CORSMiddleware
  
-Base.metadata.create_all(engine)
+#Base.metadata.create_all(engine)
 
 app = FastAPI()
 

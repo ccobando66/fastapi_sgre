@@ -67,6 +67,7 @@ class User(CrudBase):
             return f"{cedula} no existe en la base de datos" 
         
         
+     #funtion user
         
         
 
