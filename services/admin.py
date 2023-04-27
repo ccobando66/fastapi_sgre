@@ -70,3 +70,47 @@ class Admin(CrudBase):
         except Exception:
             super().get_session.close()
             return f"{cedula} no existe en la base de datos" 
+        
+    #admin functions
+    
+    #helpers
+    
+    def get_user_and_status(self,cedula:str) -> str | Any:
+        get_user = super().verify_data(data=cedula.strip(),
+                                       fun_1=self.get_user_by_admin
+                                       )
+        
+        if type(get_user) == str:
+            return get_user
+        
+        return (get_user,get_user.is_actived)
+        
+    
+    #functions
+    def bloquear_user(self, cedula:str) -> str | UserModel:
+        get_user = self.get_user_and_status(cedula)
+        
+        if type(get_user) == str:
+            return get_user
+        
+        if get_user[1] == True:
+            return f"{cedula} ya esta activo en el sistema"
+        else:
+            get_user[0].is_actived == True
+            
+        return get_user[0]
+    
+    def desbloquear_user(self, cedula:str) -> str | UserModel:
+        get_user = self.get_user_and_status(cedula)
+        
+        if type(get_user) == str:
+            return get_user
+        
+        if get_user[1] == False:
+            return f"{cedula} perviamente esta bloqueado en el sistema"
+        else:
+            get_user[0].is_actived == False
+        
+        return get_user[0]
+        
+    

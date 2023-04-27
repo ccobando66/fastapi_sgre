@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+#new features in moment to create base 
+from sqlalchemy.orm import registry
 
 URL_DATABASE = "sqlite:///../database.db"
 engine = create_engine(
@@ -14,4 +15,5 @@ SessionLocal = sessionmaker(
                             autoflush=False
                             )
 
-Base = declarative_base()
+mapper_registry = registry()
+Base = mapper_registry.generate_base()
