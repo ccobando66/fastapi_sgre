@@ -66,4 +66,15 @@ async def lock_user(cedula:str, session:common_seccion):
         )
     return get_data 
 
+@router.put('/{cedula}/admin/roll',response_model=UserShema | None)
+async def add_roll_user(cedula:str, session:common_seccion):
+    get_data = AdminService(session).asignar_rol_superusuario(cedula)
+    if type(get_data) == str:
+       raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=get_data
+        )
+    return get_data 
+
+
 

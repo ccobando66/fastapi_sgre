@@ -114,5 +114,32 @@ class Admin(CrudBase):
             super().get_session.commit()
         
         return get_user[0]
-        
     
+    def asignar_rol_super_usuario(self,cedula:str) -> str | UserModel:
+       
+        list_verify = [
+                       self.get_admin,
+                       self.get_user_by_admin
+                       ]
+        
+        for count, fun in enumerate(list_verify):
+             data = super().verify_data(data=cedula,
+                                        fun_1=fun
+                                        )
+             if type(data) == str:
+                 return data
+             
+             if len(list_verify) == count+1:
+                 list_verify.clear()
+                 list_verify.append(data)
+        
+        if list_verify[0].is_super_user:
+            return f"{cedula} eres super usuario genial"
+        else:
+            list_verify[0].is_super_user = True
+            super().get_session.commit()
+            
+        return list_verify[0]
+                 
+        
+        
