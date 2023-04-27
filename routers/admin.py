@@ -5,6 +5,8 @@ from ..services.admin import(
     Admin as AdminService
 )
 
+from ..services.user import UserShema
+
 router = APIRouter(
     prefix="/admin",
     tags=['Admin']
@@ -40,3 +42,28 @@ async def remove_admin(cedula:str, session:common_seccion):
             detail=get_data
         )
     return get_data 
+
+
+#funtion admin
+@router.put('/{cedula}/admin/unlock',response_model=UserShema)
+async def unlock_user(cedula:str, session:common_seccion):
+    get_data = AdminService(session).desbloquear_user(cedula)
+    if type(get_data) == str:
+       raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=get_data
+        )
+    return get_data 
+
+
+@router.put('/{cedula}/admin/lock',response_model=UserShema)
+async def lock_user(cedula:str, session:common_seccion):
+    get_data = AdminService(session).bloquear_user(cedula)
+    if type(get_data) == str:
+       raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=get_data
+        )
+    return get_data 
+
+

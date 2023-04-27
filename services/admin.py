@@ -87,7 +87,7 @@ class Admin(CrudBase):
         
     
     #functions
-    def bloquear_user(self, cedula:str) -> str | UserModel:
+    def desbloquear_user(self, cedula:str) -> str | UserModel:
         get_user = self.get_user_and_status(cedula)
         
         if type(get_user) == str:
@@ -96,11 +96,12 @@ class Admin(CrudBase):
         if get_user[1] == True:
             return f"{cedula} ya esta activo en el sistema"
         else:
-            get_user[0].is_actived == True
+            get_user[0].is_actived = True
+            super().get_session.commit()
             
         return get_user[0]
     
-    def desbloquear_user(self, cedula:str) -> str | UserModel:
+    def bloquear_user(self, cedula:str) -> str | UserModel:
         get_user = self.get_user_and_status(cedula)
         
         if type(get_user) == str:
@@ -109,7 +110,8 @@ class Admin(CrudBase):
         if get_user[1] == False:
             return f"{cedula} perviamente esta bloqueado en el sistema"
         else:
-            get_user[0].is_actived == False
+            get_user[0].is_actived = False
+            super().get_session.commit()
         
         return get_user[0]
         
