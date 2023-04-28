@@ -1,5 +1,5 @@
-from models.base_module import *
-from config.database import Base
+from .base_module import *
+from ..config.database import Base
 
 
 class User(Base):
@@ -44,5 +44,36 @@ class User(Base):
         Boolean,
         default=False
     )
+
+
+
+class TokenUser(Base):
+    __tablename__ = "token_user"
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
     
+    access_token = Column(
+        Text,
+    )
     
+    token_type = Column(
+        String,
+        default="bearer"
+    )
+    
+    caducidad = Column(
+        DateTime
+    )
+    
+    user_cedula = Column(
+        String(11),
+        ForeignKey('user.cedula')
+    )
+    
+    user = relationship(
+        'User'
+    )

@@ -42,11 +42,6 @@ class Admin(CrudBase):
                                       )
         if type(get_user) == str:
             return get_user
-        
-        
-        if not get_user.is_super_user :
-            return f"{admin_schema.user_cedula} no esta habilitado como administrador"
-        
        
         admin_schema.user_cedula = get_user.cedula
         

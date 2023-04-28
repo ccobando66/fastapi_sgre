@@ -3,6 +3,6 @@ from sqlalchemy.orm import (
 )   
 from sqlalchemy import (
     String, DateTime, Integer,
-    ForeignKey,Column,Boolean
+    ForeignKey,Column,Boolean,Text
 )
 

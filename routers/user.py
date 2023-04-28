@@ -6,19 +6,22 @@ from ..services.user import (
 )
 
 
-
 router = APIRouter(
     prefix='/user',
-    tags=['User']
+    tags=['User'],
+    dependencies=[Depends(get_valid_user)]
     
 )
 
 @router.get(
-    path='/{cedula}',
-    response_model=UserShema
+    path='/whoami',
+    response_model=UserShema,
 )
-async def read_user(cedula: str, seccion: common_seccion):
-    data = UserService(seccion).get_user(cedula)
+async def read_user(seccion: common_seccion,
+                    datas: Annotated[dict,router.dependencies[0]]
+                    ):
+    
+    data = UserService(seccion).get_user(datas['cedula'])
     if data is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -28,29 +31,25 @@ async def read_user(cedula: str, seccion: common_seccion):
 
 @router.get(
     path='/',
-    response_model=List[UserShema]
+    response_model=List[UserShema],
+    dependencies=[Depends(is_super_user)]
 )
-async def read_many_users(skip: int, limit:int, seccion: common_seccion):
+async def read_many_users(skip: int, 
+                          limit:int, 
+                          seccion: common_seccion,
+                          ):
+    
     return UserService(seccion).get_users(skip,limit)
 
-@router.post(
-    path='/',
-    response_model=UserShema
-)
-async def set_user(user_schema:UserCreate,seccion: common_seccion):
-    get_data = UserService(seccion).create_user(user_schema)
-    if type(get_data) == str:
-       raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=get_data
-        )
-    return get_data 
+
 
 @router.patch(
     path='/',
-    response_model=UserShema
+    response_model=UserShema   
 )
-async def modify_user(user_schema:UserCreate,seccion: common_seccion):
+async def modify_user(user_schema:UserCreate,
+                      seccion: common_seccion
+                      ):
     get_data = UserService(seccion).update_user(user_schema)
     if type(get_data) == str:
        raise HTTPException(
@@ -61,9 +60,14 @@ async def modify_user(user_schema:UserCreate,seccion: common_seccion):
 
 @router.delete(
     path='/{cedula}/delete',
-    response_model=UserShema
+    response_model=UserShema,
+    dependencies=[Depends(is_super_user)]
 )
-async def remove_user(cedula: str,seccion: common_seccion):
+async def remove_user(cedula: str,
+                      seccion: common_seccion,
+                     ):
+    
+    
     get_data = UserService(seccion).delete_user(cedula)
     if type(get_data) == str:
        raise HTTPException(
@@ -71,8 +75,8 @@ async def remove_user(cedula: str,seccion: common_seccion):
             detail=get_data
         )
     return get_data 
-    
-    
+
+  
     
     
 

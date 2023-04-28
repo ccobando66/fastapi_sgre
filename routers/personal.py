@@ -8,16 +8,22 @@ from ..services.personal import (
 
 router = APIRouter(
     prefix='/personal',
-    tags=['Personal']
+    tags=['Personal'],
+    dependencies=[Depends(get_valid_user)],
+    responses={404:{'content':'no existe en la base de datos!!! '}}
     
 )
 
+common_personal = Annotated[dict,router.dependencies[0]]
+
 @router.get(
-    path='/{cedula}',
+    path='/whoami',
     response_model=PersonalShema
 )
-async def read_personal(cedula: str, seccion: common_seccion):
-    data = PersonalService(seccion).get_personal(cedula)
+async def read_personal(seccion: common_seccion,
+                        datas : common_personal):
+    print(datas)
+    data = PersonalService(seccion).get_personal(datas['cedula'])
     if data is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -29,7 +35,15 @@ async def read_personal(cedula: str, seccion: common_seccion):
     path='/',
     response_model=List[PersonalShema]
 )
-async def read_many_personal(skip: int, limit:int, seccion: common_seccion):
+async def read_many_personal(skip: int, 
+                             limit:int, 
+                             seccion: common_seccion, 
+                             datas : common_personal):
+    if not datas['is_super_user']:
+       raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='requere permisos de superusuario para esta accion'
+        )
     return PersonalService(seccion).get_personas(skip,limit)
 
 @router.post(

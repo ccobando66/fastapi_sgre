@@ -1,6 +1,6 @@
-from models.base_module import *
-from models.personal import Base
-from models.user import User
+from .base_module import *
+from .personal import Base
+from .user import User
 
 class Admin(Base):
     __tablename__ = 'admin'

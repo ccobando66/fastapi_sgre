@@ -10,13 +10,26 @@ class UserCreate(UserBase):
     email: EmailStr
     passwd:str
     
-class UserToken(UserBase):
-    token:str
-    
-    
 class User(UserBase):
     ingreso: datetime | None = None
     is_actived: bool 
+    
     class Config:
         orm_mode=True
+    
+    
+#token schema
+class TokenBase(BaseModel):
+    access_token:str | None = None
+      
+class TokenCreate(TokenBase):
+    user_cedula:str
+    caducidad:datetime
+      
+class Token(TokenBase):
+    token_type: str 
+    
+    class Config:
+        orm_mode=True
+        
     
