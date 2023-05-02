@@ -21,8 +21,8 @@ def create_token(data:dict) -> str | None:
     
 
 def decode_token(token:Annotated[str,Depends(scheme_login)],
-                       session:Annotated[Session,Depends(get_session)]
-                       ):
+                 session:Annotated[Session,Depends(get_session)]
+                ):
     
     credential_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

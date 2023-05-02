@@ -9,12 +9,14 @@ from ..services.user import UserShema
 
 router = APIRouter(
     prefix="/admin",
-    tags=['Admin']
+    tags=['Admin'],
+    dependencies=[Depends(is_super_user)]
 )
 
 
-@router.get('/{cedula}', response_model=AdminSchema)
-async def read_admin(cedula:str,session: common_seccion):
+@router.get('/whoami', response_model=AdminSchema)
+async def read_admin(session: common_seccion,cedula:Annotated[str,router.dependencies[0]]):
+    
     data = AdminService(session).get_admin(cedula)
     if data is None:
         raise HTTPException(

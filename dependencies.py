@@ -31,7 +31,8 @@ def is_super_user(user:Annotated[dict,Depends(get_valid_user)]):
            status_code=status.HTTP_401_UNAUTHORIZED,
            detail="requere permisos de superusuario para esta accion"
            
-       ) 
+       )
+    return to_decode['cedula']
 
 
 

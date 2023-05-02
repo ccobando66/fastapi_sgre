@@ -42,7 +42,8 @@ class Admin(CrudBase):
                                       )
         if type(get_user) == str:
             return get_user
-       
+        
+        
         admin_schema.user_cedula = get_user.cedula
         
         
@@ -52,6 +53,7 @@ class Admin(CrudBase):
         
         get_admin = self.get_admin(admin_schema.user_cedula)
         get_admin.user = get_user
+        get_user.is_super_user = True
         super().get_session.commit()
         
         return get_admin

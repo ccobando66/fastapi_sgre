@@ -9,7 +9,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 Base.metadata.create_all(engine)
 
-app = FastAPI()
+app = FastAPI(title='sgre(Sistema gestión redes empresariales)',
+              description='Sistema de control de configuración equipos de red activos gestionable',
+              version="0.0.1",
+              license_info={
+                "name": "Apache 2.0",
+                 "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
+               },
+              )
 
 #cors
 app.add_middleware(
