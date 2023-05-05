@@ -1,6 +1,5 @@
 from  .base_module import *
 from  .user import Base
-from  .user import User
 
 class Personal(Base):
     __tablename__ = 'personal'
@@ -19,7 +18,16 @@ class Personal(Base):
         ForeignKey('user.cedula')
     )
     
+    #one to many
     user = relationship(
         'User',
          cascade='all, delete'
     )
+    
+    #many to many
+    equipo = relationship(
+        'Equipo',
+         secondary='personal_equipo',
+         back_populates='personal'
+    )
+    

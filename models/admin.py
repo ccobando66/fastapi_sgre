@@ -1,6 +1,6 @@
 from .base_module import *
 from .personal import Base
-from .user import User
+
 
 class Admin(Base):
     __tablename__ = 'admin'
@@ -15,7 +15,10 @@ class Admin(Base):
         ForeignKey('user.cedula')
     )
     
+    #many to one
     user = relationship(
         'User',
         cascade="all, delete"
     )
+    
+   

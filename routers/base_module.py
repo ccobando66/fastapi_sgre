@@ -3,7 +3,7 @@ from fastapi import (
     Depends
 )
 
-from typing import Annotated, List,Any
+from typing import Annotated, List,Any,Dict
 from sqlalchemy.orm import Session
 
 from ..dependencies import get_valid_user,is_super_user

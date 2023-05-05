@@ -1,6 +1,6 @@
 from .base_module import *
 from .user import User
-from enum import Enum
+
 
 class permisos(Enum):
     read = 'r'
