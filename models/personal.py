@@ -24,10 +24,4 @@ class Personal(Base):
          cascade='all, delete'
     )
     
-    #many to many
-    equipo = relationship(
-        'Equipo',
-         secondary='personal_equipo',
-         back_populates='personal'
-    )
     

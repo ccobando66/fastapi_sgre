@@ -45,6 +45,7 @@ class EquipoBase(BaseModel):
 
 class EquipoCreate(EquipoBase):
       info_equipo_id: int
+      personal_id:int | None 
       
 
 class Equipo(EquipoBase):
@@ -63,6 +64,7 @@ class TipoEquipoCreate(TipoEquipoBase):
     password:str
     device_type:DeviceTipe
     equipo_serial:str | None
+    
     
 class TipoEquipo(TipoEquipoBase):
     id:int

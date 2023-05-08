@@ -16,7 +16,7 @@ from ..schema.equipo import (
 
 from ..models.personal import Personal as PersonalModel
 from passlib.hash import bcrypt
-
+from datetime import datetime
 
 
 
@@ -35,10 +35,16 @@ class Equipo(CrudBase):
                                  PersonalModel.user_cedula,
                                  user_cedula.strip())
     
-    def get_equipos(self,skip:int,limit:int) -> List[EquipoModel]:
-        return super().get_many_models(EquipoModel,
-                                       skip,
-                                       limit)
+    
+    def get_equipos_by_personal(self,skip:int,limit:int,user_cedula:str) -> List[EquipoModel]:
+         
+        
+        return super().get_session.query(EquipoModel
+                                         ).filter(EquipoModel.personal_id == self.get_personal(user_cedula).id,
+                                                  EquipoModel.retiro == None
+                                         ).offset(skip
+                                         ).limit(limit
+                                         ).all()
     
     def create_equipo(self, equipo_schema:EquipoCreate, user_cedula:str) -> str | EquipoModel:
         personal_data = super().verify_data(data=user_cedula,
@@ -51,13 +57,13 @@ class Equipo(CrudBase):
             return "requere permisos para realizar esta accion"
         
         equipo_schema.estado = equipo_schema.estado.value
+        equipo_schema.personal_id = personal_data.id
         
         super().create_model(EquipoModel,
-                             equipo_schema.dict())
-        
+                             equipo_schema.dict(exclude_none=True))
+        print(personal_data)
         get_equipo = self.get_equipo(equipo_schema.serial)
-        get_equipo.personal.append(personal_data)
-        personal_data.equipo.append(get_equipo)
+        get_equipo.personal = personal_data
         super().get_session.commit()
         
         return get_equipo
@@ -137,6 +143,29 @@ class Equipo(CrudBase):
                              )
         
         return tipo_equipo_data
+    
+    def deleted_equipo(self, serial:str) -> str | EquipoModel:
+        get_equipo = super().verify_data(data=serial.strip(),
+                                         fun_1=self.get_equipo)
+        
+       
+        if get_equipo is None:
+            return f"{serial} no esta registrado en el sistema"
+        
+        if get_equipo.retiro is not None:
+            return f"{serial} ya esta eliminado del sistema" 
+        
+    
+        super().update_model(EquipoModel,
+                             EquipoModel.serial,
+                             serial.strip(),
+                             {'retiro':datetime.now()}
+                             )
+        super().get_session.commit()
+        return get_equipo
+            
+            
+        
 
         
         

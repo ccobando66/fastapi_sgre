@@ -25,10 +25,13 @@ async def read_equipo(serial:str,session:common_seccion):
 @router.get('/',response_model=Dict[str,List[EquipoSchema] | Any])
 async def read_many_equipo(skip:int,
                            limit:int,
-                           session:common_seccion):
+                           session:common_seccion,
+                           user_data:Annotated[dict,router.dependencies[0]]):
      
     return {
-             'data':EquipoService(session).get_equipos(skip,limit),
+             'data':EquipoService(session).get_equipos_by_personal(skip,
+                                                                   limit,
+                                                                   user_data['cedula']),
              'skip':skip,
              'limit':limit
            }   
@@ -98,6 +101,19 @@ async def alter_tipo_equipo(info_equipo_schema:TipoEquipoCreate,
                              user_data:Annotated[dict,router.dependencies[0]]):
     
     data = EquipoService(seccion).update_tipo_equipo(info_equipo_schema,user_data['cedula'])
+    if type(data) == str:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=data
+        )
+    return data
+
+@router.delete('/{serial}/eliminar',
+               response_model=EquipoSchema | None,
+               dependencies=[Depends(is_super_user)]
+               )
+async def delete_equipo(serial:str,seccion:common_seccion):
+    data = EquipoService(seccion).deleted_equipo(serial)
     if type(data) == str:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

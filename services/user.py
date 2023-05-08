@@ -28,7 +28,6 @@ class User(CrudBase):
     
     def create_user(self,user_schema:UserCreate) -> UserModel | str:
         try:
-            print(user_schema.dict())
             user_schema.passwd = bcrypt.hash(user_schema.passwd.strip())
             super().create_model(UserModel,
                                 user_schema.dict(exclude_unset=True)

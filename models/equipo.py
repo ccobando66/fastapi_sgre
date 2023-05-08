@@ -30,6 +30,11 @@ class Equipo(Base):
         ForeignKey('info_equipo.id')
     )
     
+    personal_id = Column(
+        Integer,
+        ForeignKey('personal.id')
+    )
+    
     #one to many
     info_equipo = relationship(
         'InfoEquipo'
@@ -37,9 +42,7 @@ class Equipo(Base):
     
     #many to many
     personal = relationship(
-        'Personal',
-         secondary='personal_equipo',
-         back_populates='equipo'
+        'Personal'   
     )
     
   
@@ -107,27 +110,7 @@ class InfoEquipo(Base):
     )
 
 
-class PersonalEquipo(Base):
-    
-    __tablename__ = 'personal_equipo'
-    
-    id = Column(
-        Integer,
-        primary_key=True,
-        index=True,
-        autoincrement=True
-    )
-    
-    equipo_serial = Column(
-        String,
-        ForeignKey('equipo.serial')
-    )
-    
-    personal_id = Column(
-        Integer,
-        ForeignKey('personal.id')
-    )
-    
+
     
 
 
