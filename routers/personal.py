@@ -9,8 +9,7 @@ from ..services.personal import (
 router = APIRouter(
     prefix='/personal',
     tags=['Personal'],
-    dependencies=[Depends(get_valid_user)],
-    responses={404:{'content':'no existe en la base de datos!!! '}}
+    dependencies=[Depends(get_valid_user)]
     
 )
 
@@ -18,7 +17,9 @@ common_personal = Annotated[dict,router.dependencies[0]]
 
 @router.get(
     path='/whoami',
-    response_model=PersonalShema
+    response_model=PersonalShema,
+    response_model_exclude={'id'}
+    
 )
 async def read_personal(seccion: common_seccion,
                         datas : common_personal):
