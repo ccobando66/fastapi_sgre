@@ -1,0 +1,7 @@
+conf t
+do show run
+interface e0/1
+ip add 172.16.0.1 255.255.0.0
+no shut
+exit
+do show run

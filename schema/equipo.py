@@ -32,9 +32,7 @@ class InfoEquipoBase(BaseModel):
     marca: str
     device: Device
 
-class InfoEquipo(InfoEquipoBase):
-    id: int
-    
+class InfoEquipo(InfoEquipoBase):    
     class Config:
         orm_mode=True 
 

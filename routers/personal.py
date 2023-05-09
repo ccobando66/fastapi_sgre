@@ -34,23 +34,22 @@ async def read_personal(seccion: common_seccion,
 
 @router.get(
     path='/',
-    response_model=List[PersonalShema]
+    response_model=List[PersonalShema],
+    dependencies=[Depends(is_super_user)]
 )
 async def read_many_personal(skip: int, 
                              limit:int, 
-                             seccion: common_seccion, 
-                             datas : common_personal):
-    if not datas['is_super_user']:
-       raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='requere permisos de superusuario para esta accion'
-        )
+                             seccion: common_seccion
+                             ):
+    
     return PersonalService(seccion).get_personas(skip,limit)
 
 @router.post(
-    path='/'
+    path='/',
+    dependencies=[Depends(is_super_user)]
 )
-async def set_personal(personal_schema:PersonalCreate,seccion: common_seccion):
+async def set_personal(personal_schema:PersonalCreate,
+                       seccion: common_seccion):
     get_data = PersonalService(seccion).create_personal(personal_schema)
     if type(get_data) == str:
        raise HTTPException(

@@ -1,8 +1,9 @@
 from fastapi import FastAPI,Depends
-from .models.equipo import Base
+from .models.configuracion import Base
 from .config.database import engine
 from .routers import (
-    user,personal,admin,login,equipo
+    user,personal,admin,login,equipo,
+    configuracion
 )
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -27,12 +28,16 @@ app.add_middleware(
     allow_methods=['*']
 )
 
+
+
 #routers
 app.include_router(user.router)
 app.include_router(personal.router)
 app.include_router(admin.router)
 app.include_router(login.router)
 app.include_router(equipo.router)
+app.include_router(configuracion.router)
+
 
 @app.get('/')
 async def root():
