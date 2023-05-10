@@ -65,19 +65,13 @@
 <h2 class="code-line" data-line-start=126 data-line-end=127 ><a id="instalacin_126"></a>Instalación</h2>
 <p class="has-line-data" data-line-start="127" data-line-end="128">Versión usada en este proyecto <a href="https://www.python.org/">Python 3.10</a>  o superior</p>
 <p class="has-line-data" data-line-start="129" data-line-end="130">Clonar repositorio.</p>
-<pre><code class="has-line-data" data-line-start="131" data-line-end="135" class="language-sh">git <span class="hljs-built_in">clone</span> https://github.com/ccobando66/fastapi-kimetsu_no_yaiba-api.git
-<span class="hljs-built_in">cd</span> fastapi-kimetsu_no_yaiba-api --&gt; linux
-dir fastapi-kimetsu_no_yaiba-api --&gt; windows
+<pre><code class="has-line-data" data-line-start="131" data-line-end="135" class="language-sh">git <span class="hljs-built_in">clone</span> https://github.com/ccobando66/fastapi_sgre.git
+<span class="hljs-built_in">cd</span> fastapi_sgre --&gt; linux
+dir fastapi_sgre --&gt; windows
 </code></pre>
 
 <p class="has-line-data" data-line-start="136" data-line-end="137">Crear entono virtual venv…</p>
-<pre><code class="has-line-data" data-line-start="139" data-line-end="143" class="language-sh">python3.<span class="hljs-number">10</span> -m venv venv
-<span class="hljs-built_in">source</span> venv/bin/activate --&gt; linux
-venv\Scripts\activate.bat --&gt; windows
-</code></pre>
-
-<p class="has-line-data" data-line-start="136" data-line-end="137">Crear entono virtual venv…</p>
-<pre><code class="has-line-data" data-line-start="139" data-line-end="143" class="language-sh">python3.<span class="hljs-number">10</span> -m venv venv
+<pre><code class="has-line-data" data-line-start="139" data-line-end="143" class="language-sh">python<span class="hljs-number"></span> -m venv venv
 <span class="hljs-built_in">source</span> venv/bin/activate --&gt; linux
 venv\Scripts\activate.bat --&gt; windows
 </code></pre>
@@ -85,8 +79,25 @@ venv\Scripts\activate.bat --&gt; windows
 <p class="has-line-data" data-line-start="144" data-line-end="145">Instalar dependencias en el entorno virtual…</p>
 <pre><code class="has-line-data" data-line-start="147" data-line-end="149" class="language-sh">pip3.<span class="hljs-number">10</span> install -r requirements.txt
 </code></pre>
+
+<p class="has-line-data" data-line-start="127" data-line-end="128">variables de entorno</p>
+<p class="has-line-data" data-line-start="129" data-line-end="130">nano .env</p>
+<pre><code class="has-line-data" data-line-start="131" data-line-end="135" class="language-sh">
+# JWT_ENVIROMENT
+JWT_SECRET=value
+JWT_ALGORITH=value
+JWT_EXPIRATE=value
+# DATABASE CONNECTIONS STRING ENVIROMENT
+DB_USER=value
+DB_PASSWD=value
+DB_HOST=value
+DB_NAME=value
+</code></pre>
+
 <p class="has-line-data" data-line-start="149" data-line-end="150">Iniciar servidor uvicorn…</p>
-<pre><code class="has-line-data" data-line-start="152" data-line-end="154" class="language-sh">uvicorn main:app --host <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span> --port <span class="hljs-number">8080</span> --reload 
+<pre><code class="has-line-data" data-line-start="152" data-line-end="154" class="language-sh">
+cd ..
+uvicorn fastapi_sgre.main:app --host <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span> --port <span class="hljs-number">8080</span> --reload 
 </code></pre>
 
 
