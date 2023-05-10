@@ -77,7 +77,7 @@ venv\Scripts\activate.bat --&gt; windows
 </code></pre>
 
 <p class="has-line-data" data-line-start="144" data-line-end="145">Instalar dependencias en el entorno virtual…</p>
-<pre><code class="has-line-data" data-line-start="147" data-line-end="149" class="language-sh">pip3.<span class="hljs-number">10</span> install -r requirements.txt
+<pre><code class="has-line-data" data-line-start="147" data-line-end="149" class="language-sh">pip<span class="hljs-number"></span> install -r requirements.txt
 </code></pre>
 
 <p class="has-line-data" data-line-start="127" data-line-end="128">variables de entorno</p>
