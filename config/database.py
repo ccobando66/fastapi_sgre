@@ -7,8 +7,7 @@ from sqlalchemy.orm import registry
 #URL_DATABASE = "sqlite:///../database.db database proof"
 URL_DATABASE = f"postgresql://{getenv('DB_USER')}:{getenv('DB_PASSWD')}@{getenv('DB_HOST')}/{getenv('DB_NAME')}"
 engine = create_engine(
-    URL_DATABASE,
-    connect_args={'check_same_thread':False}
+    URL_DATABASE
 )
 
 SessionLocal = sessionmaker(bind=engine)
