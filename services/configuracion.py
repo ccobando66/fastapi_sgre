@@ -21,10 +21,12 @@ class Configuracion(CrudBase):
         super().__init__(session)
     
     
-    def get_configuracion(self,id:int) -> ConfiguracionModel:
+    def get_configuracion(self, data:Any ) -> ConfiguracionModel:
+        
+        query_model = lambda my_data: ConfiguracionModel.id if type(my_data) == int else ConfiguracionModel.equipo_serial  
         return super().get_model(ConfiguracionModel,
-                                 ConfiguracionModel.id,
-                                 id)
+                                 query_model(data),
+                                 data)
         
     def get_personal(self, user_cedula:str) -> PersonalModel:
         return super().get_session.query(PersonalModel
@@ -39,14 +41,16 @@ class Configuracion(CrudBase):
     
     
     def create_configuracion(self,config_schema:ConfiguracionCreate) -> str | ConfiguracionModel:
-        get_equipo = super().verify_data(data=config_schema.equipo_serial,
+        get_equipo = super().verify_data(data=config_schema.equipo_serial.strip(),
                                          fun_1=self.get_equipo
                                         )
+        
+        get_config = self.get_configuracion(config_schema.equipo_serial.strip())
         
         if type(get_equipo) == str:
             return get_equipo
         
-        if get_equipo.serial == config_schema.equipo_serial:
+        if get_config is not None:
             return "el equipo ya cuenta con configuracion"
         
         config_schema.equipo_serial = get_equipo.serial
@@ -65,10 +69,10 @@ class Configuracion(CrudBase):
         
         return get_config
     
-    async def create_file(self, file:UploadFile, id:int) -> str | None:
+    async def create_file(self, file:UploadFile, datas:any) -> str | None:
                  
          file_path = f"{os.getcwd()}/sgre_v1/files/{file.filename}"
-         get_config = super().verify_data(data=id,
+         get_config = super().verify_data(data=datas,
                                           fun_1=self.get_configuracion)
          
          if type(get_config) == str:
@@ -121,7 +125,7 @@ class Configuracion(CrudBase):
                 net_connect.save_config()
             return True 
         except Exception as ex:
-               return str(ex).split('\n')
+               return  {'error':str(ex).split('\n')} 
         
     
     

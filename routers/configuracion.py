@@ -20,7 +20,7 @@ router = APIRouter(prefix='/config',
             response_model=ConfiguracionSchema
             )
 
-async def read_config(id:int, 
+async def read_config(id:int | str, 
                       session:common_seccion,
                       user_data:Annotated[dict,router.dependencies[0]]):
     
@@ -113,7 +113,7 @@ async def create_config(config_schema:ConfiguracionCreate,
 @router.post('/{id}',status_code=status.HTTP_202_ACCEPTED)
 async def create_file(file:Annotated[UploadFile,File()],
                       session:common_seccion,
-                      id:int,
+                      id:int | str,
                       background_task:BackgroundTasks,
                       user_data:Annotated[dict,router.dependencies[0]]):
     
@@ -134,9 +134,16 @@ async def create_file(session:common_seccion,
                       serial:Annotated[str,Form()],
                       passwd:Annotated[str,Form()],
                       user_data:Annotated[dict,router.dependencies[0]]):
-    
+     
+     personal = ConfiguracionService(session).get_personal(user_data['cedula'])
+     if personal.permisos in [None,'r','rw']:
+        raise HTTPException(
+           status_code=status.HTTP_401_UNAUTHORIZED,
+           detail="requiere permisos para realizar esta accion"
+        ) 
+        
      data = ConfiguracionService(session).send_config_on_device(passwd,serial)
-     if type(data) == str:
+     if type(data) != bool :
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=data

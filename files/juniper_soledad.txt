@@ -1,0 +1,4 @@
+edit
+set interfaces em4 unit 0 family inet address 192.168.2.33/24
+set system host-name set_config_from_sgre
+commit
