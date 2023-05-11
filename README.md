@@ -84,14 +84,14 @@ venv\Scripts\activate.bat --&gt; windows
 <p class="has-line-data" data-line-start="129" data-line-end="130">nano .env</p>
 <pre><code class="has-line-data" data-line-start="131" data-line-end="135" class="language-sh">
 # JWT_ENVIROMENT
-JWT_SECRET=value
-JWT_ALGORITH=value
-JWT_EXPIRATE=value
+JWT_SECRET="value"
+JWT_ALGORITH="value"
+JWT_EXPIRATE="value"
 # DATABASE CONNECTIONS STRING ENVIROMENT
-DB_USER=value
-DB_PASSWD=value
-DB_HOST=value
-DB_NAME=value
+DB_USER="value"
+DB_PASSWD="value"
+DB_HOST="value"
+DB_NAME="value"
 </code></pre>
 
 <p class="has-line-data" data-line-start="149" data-line-end="150">Iniciar servidor uvicorn…</p>
