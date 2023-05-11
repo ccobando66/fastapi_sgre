@@ -9,16 +9,14 @@ class Admin(Base):
         primary_key=True,
         autoincrement=True,
     )
-      
+
     user_cedula = Column(
         String(11),
         ForeignKey('user.cedula')
     )
-    
-    #many to one
+
+    # many to one
     user = relationship(
         'User',
         cascade="all, delete"
     )
-    
-   

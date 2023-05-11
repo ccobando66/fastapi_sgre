@@ -8,15 +8,18 @@ class permisos(Enum):
     exec = 'rwx'
     all = 'drwx'
 
+
 class PersonalBase(BaseModel):
     permisos: permisos
-    
+
+
 class PersonalCreate(PersonalBase):
     user_cedula: str
 
+
 class Personal(PersonalBase):
-    id: int 
-    user: User 
-    
+    id: int
+    user: User
+
     class Config:
-        orm_mode=True
+        orm_mode = True

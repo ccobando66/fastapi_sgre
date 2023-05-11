@@ -2,3 +2,5 @@ __pycache__
 venv
 migraciones
 alembic.ini
+.vscode
+.pytest_cache

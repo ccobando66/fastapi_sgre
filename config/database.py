@@ -4,8 +4,8 @@ from os import getenv
 #new features in moment to create base 
 from sqlalchemy.orm import registry
 
-#URL_DATABASE = "sqlite:///../database.db database proof"
-URL_DATABASE = f"postgresql://{getenv('DB_USER')}:{getenv('DB_PASSWD')}@{getenv('DB_HOST')}/{getenv('DB_NAME')}"
+URL_DATABASE = "sqlite:///../database.db" # proof database
+#URL_DATABASE = f"postgresql://{getenv('DB_USER')}:{getenv('DB_PASSWD')}@{getenv('DB_HOST')}/{getenv('DB_NAME')}"
 engine = create_engine(
     URL_DATABASE
 )

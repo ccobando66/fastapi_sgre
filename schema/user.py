@@ -1,35 +1,39 @@
-from .base_module import *
 from datetime import datetime
+
+from .base_module import *
+
 
 class UserBase(BaseModel):
     cedula: str
     nombre: str
     apellido: str
-    
+
+
 class UserCreate(UserBase):
     email: EmailStr
-    passwd:str
-    
+    passwd: str
+
+
 class User(UserBase):
     ingreso: datetime | None = None
-    is_actived: bool 
-    
+    is_actived: bool
+
     class Config:
-        orm_mode=True
-    
-    
-#token schema
+        orm_mode = True
+
+
+# token schema
 class TokenBase(BaseModel):
-    access_token:str | None = None
-      
+    access_token: str | None = None
+
+
 class TokenCreate(TokenBase):
-    user_cedula:str
-    caducidad:datetime
-      
+    user_cedula: str
+    caducidad: datetime
+
+
 class Token(TokenBase):
-    token_type: str 
-    
+    token_type: str
+
     class Config:
-        orm_mode=True
-        
-    
+        orm_mode = True
