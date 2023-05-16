@@ -24,6 +24,18 @@
 </ul>
 
 
+<h2 class="code-line" data-line-start=13 data-line-end=14 ><a id="Estructura_13"></a>Diagrama clases ORM</h2>
+<pre><code class="has-line-data" data-line-start="16" data-line-end="67" class="language-s">
+├── FastApi   -> Framework web Backend
+├── SqlAlchemy  -> ORM Database Mapping
+├── Pytest -> Unit Testing
+├── AIOFiles -> write in server asyncio applications
+├── Os -> Custom packages
+├── PostgreSql -> Databasee 
+└── netmiko -> Network automation
+</code></pre>
+
+
 <h2 class="code-line" data-line-start=13 data-line-end=14 ><a id="Estructura_13"></a>Tecnologías</h2>
 <pre><code class="has-line-data" data-line-start="16" data-line-end="67" class="language-s">
 ├── FastApi   -> Framework web Backend
