@@ -14,10 +14,9 @@ class Estado(Enum):
 class ConfiguracionBase(BaseModel):
     mombre: str
     version: int
-
+    estado: Estado
 
 class ConfiguracionCreate(ConfiguracionBase):
-    estado: Estado
     equipo_serial: str
 
 

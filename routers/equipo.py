@@ -6,7 +6,8 @@ from .base_module import *
 
 router = APIRouter(prefix='/equipo',
                    tags=['Equipo'],
-                   dependencies=[Depends(get_valid_user)]
+                   dependencies=[Depends(get_valid_user),
+                                 Depends(is_personal_user)]
                    )
 
 

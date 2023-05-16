@@ -35,8 +35,8 @@ async def read_config(id: int | str,
     return data
 
 
-@router.get('/{id}/file')
-async def read_file(id: int,
+@router.get('/{id}/file',response_class=FileResponse)
+async def read_file(id: int | str,
                     session: common_seccion,
                     user_data: Annotated[dict, router.dependencies[0]]):
 
@@ -57,8 +57,8 @@ async def read_file(id: int,
     return FileResponse(data)
 
 
-@router.get('/{id}/download')
-async def download_file(id: int,
+@router.get('/{id}/download', response_class=FileResponse)
+async def download_file(id: int | str,
                         session: common_seccion,
                         user_data: Annotated[dict, router.dependencies[0]]):
 
@@ -145,3 +145,25 @@ async def create_file(session: common_seccion,
             detail=data
         )
     return {'sms': 'configuracion enviada'}
+
+@router.delete('/{id}',
+               response_model=ConfiguracionSchema)
+async def delete_config(session:common_seccion,
+                        id: int | str,
+                        user_data: Annotated[dict, router.dependencies[0]]):
+    
+    personal = ConfiguracionService(session).get_personal(user_data['cedula'])
+    if personal.permisos != 'drwx':
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="requiere permisos para realizar esta accion"
+        )
+
+    data = ConfiguracionService(session).delete_config(id)
+    if type(data) == str:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=data
+        )
+    return data
+    

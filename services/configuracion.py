@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import aiofiles
 from fastapi import UploadFile
@@ -9,7 +10,8 @@ from ..models.configuracion import Configuracion as ConfiguracionModel
 from ..models.equipo import Equipo as EquipoModel
 from ..models.equipo import TipoEquipo as TipoEquipoModel
 from ..schema.configuracion import Configuracion as ConfiguracionSchema
-from ..schema.configuracion import ConfiguracionCreate
+from ..schema.configuracion import ConfiguracionCreate, Estado
+from ..schema.equipo import Estado as EstadoEquipo
 from .base_module import *
 from .base_module import Session
 from .crud_base import CrudBase
@@ -19,12 +21,14 @@ class Configuracion(CrudBase):
     def __init__(self, session: Session) -> None:
         super().__init__(session)
 
-    def get_configuracion(self, data: Any) -> ConfiguracionModel:
+    # helpers
+    def query_model(self, my_data):
+        return ConfiguracionModel.id if type(my_data) == int else ConfiguracionModel.equipo_serial
 
-        def query_model(my_data): return ConfiguracionModel.id if type(
-            my_data) == int else ConfiguracionModel.equipo_serial
+    # crud
+    def get_configuracion(self, data: Any) -> ConfiguracionModel:
         return super().get_model(ConfiguracionModel,
-                                 query_model(data),
+                                 self.query_model(data),
                                  data)
 
     def get_personal(self, user_cedula: str) -> PersonalModel:
@@ -68,7 +72,9 @@ class Configuracion(CrudBase):
 
     async def create_file(self, file: UploadFile, datas: any) -> str | None:
 
-        file_path = f"{os.getcwd()}/sgre_v1/files/{file.filename}"
+        absolute_path = os.getcwd()
+        file_path = f"/file/{file.filename}"
+
         get_config = super().verify_data(data=datas,
                                          fun_1=self.get_configuracion)
 
@@ -78,13 +84,19 @@ class Configuracion(CrudBase):
         if file.content_type != 'text/plain':
             return f"{file.content_type} formato no valido"
 
-        if not os.path.exists(file_path):
-            async with aiofiles.open(f"{file_path}", "wb") as create_file:
-                out_file = await file.read()
-                await create_file.write(out_file)
+        if not os.path.exists(f"{absolute_path}{file_path}"):
+            try:
+                os.mkdir(file_path.split('/')[-2])
+            except FileExistsError:
+                async with aiofiles.open(file_path, "wb") as create_file:
+                    out_file = await file.read()
+                    await create_file.write(out_file)
 
         if get_config.ubicacion is None:
-            get_config.ubicacion = f"/sgre_v1/files/{file.filename}"
+            get_config.ubicacion = file_path
+            get_config.estado = Estado.aplicado.value
+            self.get_equipo(
+                get_config.equipo_serial).estado = EstadoEquipo.operativo.value
             super().get_session.commit()
 
     def read_file_on_client(self, id: int) -> str:
@@ -120,6 +132,27 @@ class Configuracion(CrudBase):
                 net_connect.send_config_from_file(
                     f'{os.getcwd()}{get_config.ubicacion}')
                 net_connect.save_config()
+            get_config.estado = Estado.enviado.value
+            super().get_session.commit()
             return True
         except Exception as ex:
             return {'error': str(ex).split('\n')}
+
+    def delete_config(self, data: Any) -> str | ConfiguracionModel:
+        get_config = super().verify_data(data=data,
+                                         fun_1=self.get_configuracion)
+
+        if type(get_config) == str:
+            return get_config
+
+        if get_config.eliminado is not None:
+            return f"{data} ya esta eliminado del sistema"
+
+        super().update_model(ConfiguracionModel,
+                             self.query_model(data),
+                             data,
+                             {'eliminado': datetime.now(),
+                              'estado': Estado.eliminado.value})
+
+        super().get_session.commit()
+        return get_config

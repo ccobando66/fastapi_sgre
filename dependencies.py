@@ -35,3 +35,13 @@ def is_super_user(user: Annotated[dict, Depends(get_valid_user)]):
 
         )
     return to_decode['cedula']
+
+def is_personal_user(user: Annotated[dict, Depends(get_valid_user)]):
+    to_decode = user.copy()
+    if to_decode['is_super_user']:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Acceso autorizado solo a personal registrado"
+
+        )
+    
