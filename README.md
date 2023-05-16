@@ -25,7 +25,13 @@
 
 
 <h2 class="code-line" data-line-start=13 data-line-end=14 ><a id="Estructura_13"></a>Diagrama clases ORM</h2>
-  <img src="https://github.com/ccobando66/fastapi_sgre/assets/115023210/fa28f8c9-bf86-4699-bf29-afe515e495c8"/>
+  <img src="https://github.com/ccobando66/fastapi_sgre/assets/115023210/e1555a69-9b5e-4858-b975-2e63ae359d9c">
+ 
+ <h2 class="code-line" data-line-start=13 data-line-end=14 ><a id="Estructura_13"></a>Diagrama clases Services</h2>
+   <img src="https://github.com/ccobando66/fastapi_sgre/assets/115023210/ee32c236-0196-437c-a644-37335bcbc728">
+
+
+
 
 
 
