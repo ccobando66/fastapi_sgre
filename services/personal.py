@@ -27,7 +27,7 @@ class Personal(CrudBase):
                                        limit
                                        )
 
-    def create_personal(self, personal_schema: PersonalCreate) -> PersonalModel | str:
+    def create_personal(self, personal_schema: PersonalCreate) -> str | PersonalModel:
 
         get_user = super().verify_data(data=personal_schema.user_cedula,
                                        fun_1=self.get_personal_by_user,
@@ -48,7 +48,7 @@ class Personal(CrudBase):
 
         return self.get_personal(personal_schema.user_cedula)
 
-    def update_personal(self, personal_schema: PersonalCreate) -> PersonalModel | str:
+    def update_personal(self, personal_schema: PersonalCreate) -> str | PersonalModel:
 
         result = super().verify_data(data=personal_schema.user_cedula,
                                      fun_1=self.get_personal

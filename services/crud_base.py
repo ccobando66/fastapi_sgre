@@ -1,4 +1,4 @@
-from .base_module import Any, Column, List, Session
+from .base_module import Any, Column, List, Session,Tuple
 
 
 class CrudBase:

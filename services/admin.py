@@ -70,7 +70,7 @@ class Admin(CrudBase):
 
     # helpers
 
-    def get_user_and_status(self, cedula: str) -> str | Any:
+    def get_user_and_status(self, cedula: str) -> str | Tuple[UserModel,bool]:
         get_user = super().verify_data(data=cedula.strip(),
                                        fun_1=self.get_user_by_admin
                                        )

@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List,Tuple
 
 from sqlalchemy import Column
 from sqlalchemy.orm import Session

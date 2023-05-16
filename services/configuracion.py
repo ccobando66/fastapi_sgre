@@ -22,7 +22,7 @@ class Configuracion(CrudBase):
         super().__init__(session)
 
     # helpers
-    def query_model(self, my_data):
+    def query_model(self, my_data:Any):
         return ConfiguracionModel.id if type(my_data) == int else ConfiguracionModel.equipo_serial
 
     # crud
