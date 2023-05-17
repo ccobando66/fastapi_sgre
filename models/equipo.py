@@ -34,15 +34,25 @@ class Equipo(Base):
         Integer,
         ForeignKey('personal.id')
     )
+    
+    rack_id = Column(
+        Integer,
+        ForeignKey('rack.id')
+    )
 
-    # one to many
+    # many to one
     info_equipo = relationship(
         'InfoEquipo'
     )
 
-    # many to many
+    # many to one
     personal = relationship(
         'Personal'
+    )
+    
+    # many to one
+    rack = relationship(
+        'Rack'
     )
 
 
