@@ -83,7 +83,7 @@ class Configuracion(CrudBase):
 
         if file.content_type != 'text/plain':
             return f"{file.content_type} formato no valido"
-        
+
         if file.size > (2*(1024**2)):
             return f"{file.filename} excede el tamaño máximo permitido (2 MB)"
 
