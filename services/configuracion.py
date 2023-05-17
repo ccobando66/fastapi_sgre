@@ -89,9 +89,12 @@ class Configuracion(CrudBase):
 
         if not os.path.exists(f"{absolute_path}{file_path}"):
             try:
-                os.mkdir(file_path.split('/')[-2])
+                os.mkdir(f"{absolute_path}{file_path}".split('/')[-2])
+                async with aiofiles.open(f"{absolute_path}{file_path}", "wb") as create_file:
+                    out_file = await file.read()
+                    await create_file.write(out_file)
             except FileExistsError:
-                async with aiofiles.open(file_path, "wb") as create_file:
+                async with aiofiles.open(f"{absolute_path}{file_path}", "wb") as create_file:
                     out_file = await file.read()
                     await create_file.write(out_file)
 
