@@ -22,7 +22,7 @@ class Configuracion(CrudBase):
         super().__init__(session)
 
     # helpers
-    def query_model(self, my_data: Any):
+    def query_model(self, my_data:Any):
         return ConfiguracionModel.id if type(my_data) == int else ConfiguracionModel.equipo_serial
 
     # crud
@@ -83,18 +83,15 @@ class Configuracion(CrudBase):
 
         if file.content_type != 'text/plain':
             return f"{file.content_type} formato no valido"
-
+        
         if file.size > (2*(1024**2)):
             return f"{file.filename} excede el tamaño máximo permitido (2 MB)"
 
         if not os.path.exists(f"{absolute_path}{file_path}"):
             try:
                 os.mkdir(file_path.split('/')[-2])
-                async with aiofiles.open(f"{absolute_path}{file_path}", "wb") as create_file:
-                    out_file = await file.read()
-                    await create_file.write(out_file)
             except FileExistsError:
-                async with aiofiles.open(f"{absolute_path}{file_path}", "wb") as create_file:
+                async with aiofiles.open(file_path, "wb") as create_file:
                     out_file = await file.read()
                     await create_file.write(out_file)
 
