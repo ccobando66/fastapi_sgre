@@ -44,4 +44,5 @@ def is_personal_user(user: Annotated[dict, Depends(get_valid_user)]):
             detail="Acceso autorizado solo a personal registrado"
 
         )
+    return to_decode['cedula']
     

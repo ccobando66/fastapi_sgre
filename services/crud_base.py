@@ -1,6 +1,7 @@
 from .base_module import Any, Column, List, Session,Tuple
+from injector import singleton
 
-
+@singleton
 class CrudBase:
     def __init__(self, session: Session) -> None:
         self.__session = session

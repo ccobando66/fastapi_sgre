@@ -54,7 +54,7 @@ class Rack(Base):
     
     ubicacion_id = Column(
         Integer,
-        ForeignKey('ubicacion.id')
+        ForeignKey('ubicacion.id', ondelete='set null')
     )
     
     #many to one

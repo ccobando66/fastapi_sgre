@@ -15,7 +15,7 @@ class Ubicacion(UbicacionCreate):
     
 
 class RackBase(BaseModel):
-    nombre:str 
+    nombre:str
     area:str
     piso:str
     

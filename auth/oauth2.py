@@ -43,7 +43,7 @@ def decode_token(token: Annotated[str, Depends(scheme_login)],
                              User.cedula
                              ).filter(User.cedula == payload['user_cedula']
                                       ).first()
-
+        
         if data is None or datetime.isoformat(datetime.now()) >= payload['caducidad']:
             raise credential_exception
 

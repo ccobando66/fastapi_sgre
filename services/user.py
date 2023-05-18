@@ -102,9 +102,9 @@ class User(CrudBase):
                              )
 
         get_user.ingreso = datetime.now()
-
+        
         if get_token is None:
-
+            
             token = create_token(jsonable_encoder(
                 encode.dict(exclude={'access_token'})))
             if token is None:
