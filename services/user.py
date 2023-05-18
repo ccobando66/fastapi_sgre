@@ -26,11 +26,12 @@ class User(CrudBase):
                                  cedula.strip()
                                  )
 
-    def get_users(self, skip: int, limit: int) -> List[UserModel]:
-        return super().get_many_models(UserModel,
-                                       skip,
-                                       limit
-                                       )
+    def get_users(self, page: int, result_page: int) -> Tuple[List[UserModel],int]:
+        skip = (page - 1) * result_page
+        limit = skip + result_page
+        return (super().get_many_models(UserModel,skip,limit),
+                skip,
+                limit)
 
     def create_user(self, user_schema: UserCreate) -> UserModel | str:
         try:

@@ -24,17 +24,19 @@ async def read_equipo(serial: str, session: common_seccion):
 
 
 @router.get('/', response_model=Dict[str, List[EquipoSchema] | Any])
-async def read_many_equipo(skip: int,
-                           limit: int,
+async def read_many_equipo(page: Annotated[int, Query(..., gt=0)],
+                           max_page: Annotated[int, Query(..., ge=10)],
                            session: common_seccion,
                            user_data: Annotated[dict, router.dependencies[0]]):
 
+    data = EquipoService(session).get_equipos_by_personal(page,
+                                                          max_page)
     return {
-        'data': EquipoService(session).get_equipos_by_personal(skip,
-                                                               limit,
-                                                               user_data['cedula']),
-        'skip': skip,
-        'limit': limit
+        'data': data[0],
+        'page': page,
+        'start': data[1],
+        'end': data[2],
+        'total': max_page
     }
 
 

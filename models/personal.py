@@ -21,6 +21,5 @@ class Personal(Base):
 
     # one to many
     user = relationship(
-        'User',
-        cascade='all, delete'
+        'User'
     )

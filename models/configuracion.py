@@ -39,7 +39,7 @@ class Configuracion(Base):
 
     equipo_serial = Column(
         String,
-        ForeignKey("equipo.serial")
+        ForeignKey("equipo.serial",ondelete='set null')
     )
 
     equipo = relationship(

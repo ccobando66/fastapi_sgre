@@ -17,6 +17,5 @@ class Admin(Base):
 
     # many to one
     user = relationship(
-        'User',
-        cascade="all, delete"
+        'User'
     )

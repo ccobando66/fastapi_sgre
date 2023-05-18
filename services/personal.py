@@ -21,11 +21,12 @@ class Personal(CrudBase):
                                  cedula
                                  )
 
-    def get_personas(self, skip: int, limit: int) -> List[PersonalModel]:
-        return super().get_many_models(PersonalModel,
-                                       skip,
-                                       limit
-                                       )
+    def get_personas(self, page: int, result_page: int) -> Tuple[List[PersonalModel],int]:
+        skip = (page - 1) * result_page
+        limit = skip + result_page
+        return (super().get_many_models(PersonalModel,skip,limit),
+                skip,
+                limit)
 
     def create_personal(self, personal_schema: PersonalCreate) -> str | PersonalModel:
 

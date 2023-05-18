@@ -29,15 +29,21 @@ async def read_user(seccion: common_seccion,
 
 @router.get(
     path='/',
-    response_model=List[UserShema],
+    response_model=Dict[str,List[UserShema] | Any],
     dependencies=[Depends(is_super_user)]
 )
-async def read_many_users(skip: int,
-                          limit: int,
-                          seccion: common_seccion,
-                          ):
+async def read_many_users(page:Annotated[int,Query(...,gt=0)],
+                          max_page: Annotated[int,Query(...,ge=10)],
+                          session: common_seccion):
 
-    return UserService(seccion).get_users(skip, limit)
+    data = UserService(session).get_users(page, max_page)
+    return {
+        'data': data[0],
+        'page': page,
+        'start': data[1],
+        'end': data[2],
+        'total': max_page
+    }
 
 
 @router.patch(

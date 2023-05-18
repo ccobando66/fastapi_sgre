@@ -32,7 +32,7 @@ class Ubicacion(CrudBase):
     def get_ubicaciones(self, page: int = 1, result_page: int = 10) -> Tuple[List[UbicacionSchema], int]:
         skip = (page - 1) * result_page
         limit = skip + result_page
-        return (super().get_many_models(RackModel, skip, limit),
+        return (super().get_many_models(UbicacionModel, skip, limit),
                 skip,
                 limit)
 

@@ -25,8 +25,8 @@ async def read_ubicacion(id: int,
 
 
 @router.get('/', response_model=Dict[str, List[UbicacionSchema] | Any])
-async def read_ubicaciones(page: int,
-                           max_page: int,
+async def read_ubicaciones(page: Annotated[int, Query(..., gt=0)],
+                           max_page: Annotated[int, Query(..., ge=10)],
                            session: common_seccion):
 
     data = UbicacionService(session).get_ubicaciones(page)
@@ -103,9 +103,9 @@ async def read_rack(id: int,
 
 
 @router.get('/rack/', response_model=Dict[str, List[RackSchema] | Any])
-async def read_racks(page: int,
-                    max_page: int,
-                    session: common_seccion):
+async def read_racks(page: Annotated[int, Query(..., gt=0)],
+                     max_page: Annotated[int, Query(..., ge=10)],
+                     session: common_seccion):
 
     data = UbicacionService(session).get_racks(page, max_page)
     return {

@@ -32,40 +32,42 @@ class Equipo(CrudBase):
                                  PersonalModel.user_cedula,
                                  user_cedula.strip())
 
-    def get_equipos_by_personal(self, skip: int, limit: int, user_cedula: str) -> List[EquipoModel]:
-
-        return super().get_session.query(EquipoModel
-                                         ).filter(EquipoModel.personal_id == self.get_personal(user_cedula).id,
-                                                  EquipoModel.retiro == None
-                                                  ).offset(skip
-                                                           ).limit(limit
-                                                                   ).all()
+    def get_equipos_by_personal(self, page: int, result_page: int) -> Tuple[List[EquipoModel], int]:
+        skip = (page - 1) * result_page
+        limit = skip + result_page
+        return (super().get_session.query(EquipoModel
+                                          ).filter(EquipoModel.retiro == None
+                                          ).order_by(EquipoModel.ingreso.desc()
+                                          ).offset(skip
+                                          ).limit(limit
+                                          ).all(),
+                skip,
+                limit)
 
     def create_equipo(self, equipo_schema: EquipoCreate, user_cedula: str) -> str | EquipoModel:
         personal_data = super().verify_data(data=user_cedula,
                                             fun_1=self.get_personal)
-        
+
         get_rack = super().get_model(RackModel,
                                      RackModel.id,
                                      equipo_schema.rack_id)
 
         if type(personal_data) == str:
             return personal_data
-        
+
         if get_rack is None:
-           return f"{equipo_schema.rack_id} no esta registrado en el sistema" 
+            return f"{equipo_schema.rack_id} no esta registrado en el sistema"
 
         if personal_data.permisos != 'drwx':
             return "requere permisos para realizar esta accion"
 
         equipo_schema.estado = equipo_schema.estado.value
-        
 
         super().create_model(EquipoModel,
                              equipo_schema.dict(exclude_none=True))
-        
+
         get_equipo = self.get_equipo(equipo_schema.serial)
-        
+
         get_equipo.personal_id = user_cedula.strip()
         get_equipo.personal = personal_data
         get_equipo.rack = get_rack

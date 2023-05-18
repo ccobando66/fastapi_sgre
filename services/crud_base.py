@@ -1,5 +1,6 @@
-from .base_module import Any, Column, List, Session,Tuple
+from .base_module import Any, Column, List, Session, Tuple
 from injector import singleton
+
 
 @singleton
 class CrudBase:

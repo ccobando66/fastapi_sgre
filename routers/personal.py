@@ -32,20 +32,29 @@ async def read_personal(seccion: common_seccion,
 
 @router.get(
     path='/',
-    response_model=List[PersonalShema],
+    response_model=Dict[str,List[PersonalShema] | Any] ,
     dependencies=[Depends(is_super_user)]
 )
-async def read_many_personal(skip: int,
-                             limit: int,
+async def read_many_personal(page: Annotated[int, Query(..., gt=0)],
+                             max_page: Annotated[int, Query(..., ge=10)],
                              seccion: common_seccion
                              ):
 
-    return PersonalService(seccion).get_personas(skip, limit)
+    data = PersonalService(seccion).get_personas(page, max_page)
+    return {
+        'data': data[0],
+        'page': page,
+        'start': data[1],
+        'end': data[2],
+        'total': max_page
+    }
 
 
 @router.post(
     path='/',
-    dependencies=[Depends(is_super_user)]
+    dependencies=[Depends(is_super_user)],
+    response_model=PersonalShema,
+    status_code=status.HTTP_201_CREATED
 )
 async def set_personal(personal_schema: PersonalCreate,
                        seccion: common_seccion):
@@ -60,6 +69,7 @@ async def set_personal(personal_schema: PersonalCreate,
 
 @router.patch(
     path='/',
+    dependencies=[Depends(is_super_user)],
     response_model=PersonalShema
 )
 async def modify_user(user_schema: PersonalCreate, seccion: common_seccion):
@@ -74,6 +84,7 @@ async def modify_user(user_schema: PersonalCreate, seccion: common_seccion):
 
 @router.delete(
     path='/{cedula}/delete',
+    dependencies=[Depends(is_super_user)],
     response_model=PersonalShema
 )
 async def remove_user(cedula: str, seccion: common_seccion):
