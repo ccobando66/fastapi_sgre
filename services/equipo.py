@@ -7,6 +7,7 @@ from ..models.equipo import Equipo as EquipoModel
 from ..models.equipo import InfoEquipo as InfoEquipoModel
 from ..models.equipo import TipoEquipo as TipoEquipoModel
 from ..models.personal import Personal as PersonalModel
+from ..models.ubicacion import Rack as RackModel
 from ..schema.equipo import Equipo as EquipoSchema
 from ..schema.equipo import EquipoCreate
 from ..schema.equipo import InfoEquipo as InfoEquipoSchema
@@ -43,21 +44,31 @@ class Equipo(CrudBase):
     def create_equipo(self, equipo_schema: EquipoCreate, user_cedula: str) -> str | EquipoModel:
         personal_data = super().verify_data(data=user_cedula,
                                             fun_1=self.get_personal)
+        
+        get_rack = super().get_model(RackModel,
+                                     RackModel.id,
+                                     equipo_schema.rack_id)
 
         if type(personal_data) == str:
             return personal_data
+        
+        if get_rack is None:
+           return f"{equipo_schema.rack_id} no esta registrado en el sistema" 
 
         if personal_data.permisos != 'drwx':
             return "requere permisos para realizar esta accion"
 
         equipo_schema.estado = equipo_schema.estado.value
-        equipo_schema.personal_id = personal_data.id
+        
 
         super().create_model(EquipoModel,
                              equipo_schema.dict(exclude_none=True))
-        print(personal_data)
+        
         get_equipo = self.get_equipo(equipo_schema.serial)
+        
+        get_equipo.personal_id = user_cedula.strip()
         get_equipo.personal = personal_data
+        get_equipo.rack = get_rack
         super().get_session.commit()
 
         return get_equipo

@@ -37,7 +37,7 @@ def decode_token(token: Annotated[str, Depends(scheme_login)],
 
         payload = jwt.decode(token, getenv('JWT_SECRET'),
                              algorithms=[getenv('JWT_ALGORITH')])
-        print
+
         data = session.query(User.is_actived,
                              User.is_super_user,
                              User.cedula

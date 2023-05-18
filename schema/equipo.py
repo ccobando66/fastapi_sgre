@@ -2,6 +2,7 @@ from uuid import uuid4
 
 from .base_module import BaseModel, Enum, List
 from .personal import Personal
+from .ubicacion import Rack
 
 
 class Device(Enum):
@@ -45,11 +46,12 @@ class EquipoBase(BaseModel):
 
 class EquipoCreate(EquipoBase):
     info_equipo_id: int
-    personal_id: int | None
+    rack_id: int 
 
 
 class Equipo(EquipoBase):
     info_equipo: InfoEquipo | None = None
+    rack:Rack | None = None
 
     class Config:
         orm_mode = True
@@ -75,10 +77,3 @@ class TipoEquipo(TipoEquipoBase):
         orm_mode = True
 
 
-class EquipoPersona(BaseModel):
-    id: int
-    equipo: Equipo
-    personal: Personal
-
-    class Config:
-        orm_mode = True

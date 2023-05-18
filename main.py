@@ -3,8 +3,9 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config.database import engine
-from .models.configuracion import Base
-from .routers import admin, configuracion, equipo, login, personal, user
+from .models.ubicacion import Base
+from .routers import (admin, configuracion, equipo, login, personal, ubicacion,
+                      user)
 
 load_dotenv()
 Base.metadata.create_all(engine)
@@ -35,6 +36,7 @@ app.include_router(admin.router)
 app.include_router(login.router)
 app.include_router(equipo.router)
 app.include_router(configuracion.router)
+app.include_router(ubicacion.router)
 
 
 @app.get('/')
