@@ -4,3 +4,5 @@ migraciones
 alembic.ini
 .vscode
 .pytest_cache
+.scannerwork
+*.properties
